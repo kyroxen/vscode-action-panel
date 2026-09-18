@@ -1,0 +1,10 @@
+.vscode/**
+src/**
+.gitignore
+esbuild.js
+tsconfig.json
+**/*.map
+**/.gitkeep
+# esbuild bundles all dependencies (including shiki) directly into dist/extension.js,
+# so no runtime node_modules is needed in the packaged extension.
+node_modules/**

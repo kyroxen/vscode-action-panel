@@ -1,0 +1,101 @@
+{
+  "name": "vscode-action-panel",
+  "displayName": "Action Panel",
+  "description": "Show Usages and Implementations for the symbol under the cursor in a single persistent side panel, IntelliJ-style.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onView:actionPanel.panelView"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "actionPanel.show",
+        "title": "Action Panel: Show Usages & Implementations"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "actionPanel.show",
+          "when": "editorHasReferenceProvider",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "actionPanel.show",
+        "key": "ctrl+alt+u",
+        "mac": "cmd+alt+u",
+        "when": "editorHasReferenceProvider"
+      }
+    ],
+    "configuration": {
+      "title": "Action Panel",
+      "properties": {
+        "actionPanel.openLocation": {
+          "type": "string",
+          "enum": [
+            "beside",
+            "panel"
+          ],
+          "enumDescriptions": [
+            "Open in a webview panel beside the active editor, in the editor grid.",
+            "Open in a persistent view docked in the bottom panel area, alongside Terminal, Problems, and Output (default)."
+          ],
+          "default": "panel",
+          "description": "Where the \"Action Panel: Show Usages & Implementations\" view opens."
+        },
+        "actionPanel.accentColor": {
+          "type": "string",
+          "default": "",
+          "description": "A literal CSS color (e.g. #ff8800) used as a single accent -- the active tab underline/label, file headers, and the hover/focus indicator on entries -- so the panel stands out from other panels/peek views. Leave empty (default) to use the current theme's own link/focus color instead."
+        }
+      }
+    },
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "actionPanelContainer",
+          "title": "Action Panel",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "actionPanelContainer": [
+        {
+          "id": "actionPanel.panelView",
+          "name": "Usages & Implementations",
+          "type": "webview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "typecheck": "tsc --noEmit -p ./",
+    "package": "npm run compile && npx vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^2.32.0",
+    "esbuild": "^0.23.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "shiki": "^4.4.3"
+  }
+}
